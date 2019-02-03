@@ -43,6 +43,10 @@ nav:
       name: Github
       url: https://github.com/mpkocher
 
+    - 
+      name: LinkedIn
+      url: https://www.linkedin.com/in/michael-kocher-b4bba5122/   
+
     - name: Now
       url: /2017/09/04/Now
     -
@@ -60,7 +64,7 @@ nav:
 #jiathis: 1589291
 
 # open graph
-twitter:
+twitter: https://twitter.com/EruditaLabs
 google_plus:
 fb_admins:
 fb_app_id:
