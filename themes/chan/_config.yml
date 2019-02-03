@@ -34,13 +34,16 @@ nav:
       url: /archives
   -
     -
+      name: About
+      url: /2017/09/04/About/
+    -
       name: CV
       url: https://github.com/mpkocher/cv/blob/master/academic/cv.pdf
     -
       name: Github
       url: https://github.com/mpkocher
 
-    - name: now
+    - name: Now
       url: /2017/09/04/Now
     -
       name: RSS
