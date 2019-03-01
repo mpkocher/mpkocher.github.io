@@ -1,5 +1,5 @@
 ---
-title: Functional-Programming-Techniques-In-Python-Series
+title: "Series: Functional Programming Techniques In Python"
 date: 2019-03-01 00:35:52
 tags: 
     - python 
