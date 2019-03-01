@@ -21,3 +21,8 @@ A few open source projects that I have contributed to. Several Most of these lib
 - [pbcoretools](https://github.com/mpkocher/pbcoretools)
 - [pbreports](https://github.com/mpkocher/pbreports)
 - [pymatgen](https://github.com/materialsproject/pymatgen)
+
+
+## Series
+
+- [Functional Programming Techniques (FPT) in Python](https://mpkocher.github.io/2019/03/01/Functional-Programming-Techniques-In-Python-Series/)
