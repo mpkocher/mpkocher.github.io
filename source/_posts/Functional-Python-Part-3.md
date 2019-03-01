@@ -7,6 +7,6 @@ tags:
     - FPT
 ---
 
-[Functional Programming Techniques in Python Part 3](https://gist.github.com/mpkocher/517d9e72536346de505bff47199a9b24)
+[Functional Programming Techniques in Python Part 3](https://gist.github.com/mpkocher/4e261b38d8b1c76a7f6dd8e9a95a4873)
 
 {% gist 4e261b38d8b1c76a7f6dd8e9a95a4873 %}
