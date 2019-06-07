@@ -219,7 +219,9 @@ If you're a library developer that has packages on [PyPi](https://pypi.org), it 
 
 On December 23, 2016, Python 3.6 was officially released. In the Fall of 2018, [JetBrains release the Python Developer Survey](https://www.jetbrains.com/research/python-developers-survey-2018/#python-3-adoption) which contains the Python 2/3 breakdown, as well as the breakdown of different versions within Python 3. As of Fall 2018, 54% of Python 3 developers were using Python 3.6.x. Therefore, using this very crude model, if you assume that the rate of adoption of 3.6 and 3.8 are the same and if the minimum threshold of adoption of 3.8 is 54%, then you'll need to wait approximately 2 years before starting to leverage these 3.8 features. 
 
-{% asset_img "jetbrains_python_survey_2018.png" %}
+
+<img src="https://github.com/mpkocher/mpkocher.github.io/blob/master/images/jetbrains_python_survey_2018.png?raw=true" alt="Jetbrains Python Survey" height="600">
+
 
 When you do plan to leverage these 3.8 specific features and pushing a package to the Python Package Index, then I would suggest clearly defining the Python version in the `setup.py`. For more details, see the official packaging [docs](python_requires='>3.5.2') for more details.
 
