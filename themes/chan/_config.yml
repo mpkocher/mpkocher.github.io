@@ -42,12 +42,14 @@ nav:
     -
       name: Github
       url: https://github.com/mpkocher
-
     - 
       name: LinkedIn
       url: https://www.linkedin.com/in/michael-kocher-b4bba5122/   
-
-    - name: Now
+    -
+      name: Twitter
+      url: https://twitter.com/ElevenPhonons
+    -
+      name: Now
       url: /2017/09/04/Now
     -
       name: RSS
@@ -64,13 +66,13 @@ nav:
 #jiathis: 1589291
 
 # open graph
-twitter: https://twitter.com/EruditaLabs
+twitter: https://twitter.com/ElevenPhonons
 google_plus:
 fb_admins:
 fb_app_id:
 
 # analytics ids
-google_analytics:
+google_analytics: UA-141397134-1
 baidu_statistics:
 
 # default creative commons
