@@ -1,5 +1,5 @@
 ---
-title: Python 3.8.0b1 Quick Look
+title: Python 3.8.0b1 Positional-Only Arguments and the Walrus Operator
 date: 2019-06-06 18:04:36
 tags:
   - python
@@ -7,7 +7,7 @@ tags:
 
 On June 4th 2019, [Python 3.8.0b1 was released](https://github.com/python/cpython/releases/tag/v3.8.0b1). The official [changelog is here](https://docs.python.org/3.8/whatsnew/changelog.html#changelog). 
 
-There are two interesting syntactic changes/features that were added which I believe are useful to explore in a bit of depth. Specifically, the new "walrus"' `:=` operator and the new Positional-Only function parameter features.
+There are two interesting syntactic changes/features that were added which I believe are useful to explore in some depth. Specifically, the new "walrus"' `:=` operator and the new Positional-Only function parameter features.
 
 ## Walrus
 
@@ -43,7 +43,7 @@ First: steve Last: smith
 
 As a side note, many of these "None-ish" based examples in the PEP (somewhat mechanically) look like a `map`, `flatMap`, `'foreach'` on `Option[T]` cases in Scala. 
 
-Python doesn't really do this well due to its inside out nature of composing maps/filter/generators (versus a left to right model). Nevertheless, here's the example. 
+Python doesn't really do this well due to its inside-out nature of composing maps/filter/generators (versus a left to right model). Nevertheless, here's the example to demonstrate the general idea using a functional centric approach.
 
 ```python
 >>> def processor(sx): return rx.match(sx)
@@ -53,7 +53,7 @@ Python doesn't really do this well due to its inside out nature of composing map
 First: steve Last: smith
 ```
 
-The "Exceptional cases" are [worth investigating in more detail](https://www.python.org/dev/peps/pep-0572/#exceptional-cases). There's several cases where "Valid, though probably confusing" is used.
+The "Exceptional cases" described in the PEP are [worth investigating in more detail](https://www.python.org/dev/peps/pep-0572/#exceptional-cases). There's several cases where "Valid, though probably confusing" is used.
 
 For example:
 
@@ -62,7 +62,7 @@ y := f(x)  # INVALID
 (y := f(x))  # Valid, though not recommended
 ```
 
-The "walrus" operator can also be used in function definitions. 
+Note that the "walrus" operator can also be used in function definitions. 
 
 ```python
 def foo(answer = p := 42): return "" # INVALID
@@ -90,7 +90,7 @@ def f(x, y=1234): return x + y
 3
 ```
 
-Often this isn't really a big deal, however, it can leak local variable names as part of the public interface. Small renaming, can break interfaces. It's also not clear what should be a keyword only argument or a positional only argument with a default. For example, simply changing `f(x, y=1234)` to `f(n, y=1234)` can potentially break the interface depending on the call "style".
+Often this fundamental ambiguity of function call "style" isn't really a big deal. However, it can leak local variable names as part of the public interface.As a result, minor variable renaming can potentially break interfaces. It's also not clear what should be a keyword only argument or a positional only argument with a default. For example, simply changing `f(x, y=1234)` to `f(n, y=1234)` can potentially break the interface depending on the call "style".
 
 I've worked with a few developers over the years that viewed this as a feature and thought that this style made the API calls more explicit. For example:
 
@@ -101,14 +101,14 @@ def compute(alpha, beta, gamma):
 compute(alpha=90, gamma=80, beta=120)
 ```
 
-I never really liked this looseness of positional vs keyword and would try to discourage it's use. Regardless, it can be argued this is a feature of the language (at least in <= 3.7). I would guess that many Python developers are also leveraging the unpacking dict style as well.
+I never really liked this looseness of positional vs keyword and would (if possible) try to discourage its use. Regardless, it can be argued this is a feature of the language (at least in Python <= 3.7). I would guess that many Python developers are also leveraging the unpacking dict style as well to call functions.
 
 ```python
 d = dict(alpha=90, gamma=70, beta=120)
 compute(**d)
 ```
 
-In Python 3, function definitions using Keyword-Only was added (see [PEP-3102](https://www.python.org/dev/peps/pep-3102/) from 2006) using the `*`. All arguments to the right of the `*` are Keyword-Only arguments. 
+In Python 3.0, function definitions using Keyword-Only arguments was added (see [PEP-3102](https://www.python.org/dev/peps/pep-3102/) from 2006) using the `*` delimiter. All arguments to the right of the `*` are Keyword-Only arguments. 
 
 
 ```python
@@ -116,9 +116,9 @@ def f(a, b, *, c=1234):
     return a + b + c
 ```
 
-However, this still leaves a fundamental issue with clearly defining args. There are three cases: Positional-Only, Positional or Keyword, and Keyword-Only. PEP-3102 only solves the Keyword-Only case and doesn't address the other two cases. 
+Unfortunately, this still leaves a fundamental issue with clearly defining function arguments. There are three cases: Positional-Only, Positional or Keyword, and Keyword-Only. PEP-3102 only solves the Keyword-Only case and doesn't address the other two cases. 
 
-Hence in Python < 3.8, there's still a fundamental ambiguity when defining a function and how it can be called (I'll leave it up to the reader to decide if this is a bug or a feature).
+Hence in Python < 3.8, there's still a fundamental ambiguity when defining a function and how it can be called.
 
 For example:
 
@@ -135,7 +135,7 @@ f(a=1, b=2, c=3)
 
 Starting with Python 3.8.0, a Positional-Only parameters mechanism was added. The details are captured in [PEP-570](https://www.python.org/dev/peps/pep-0570/)
 
-Similar to the `*` delimiter in Python 3.0.0 for Keyword-Only args), a `/` delimiter was added to clearly delineate Positional-Only (or conversely Keyword-Only args) in function of method definitions. This makes the three cases of function arguments unambigious in how they should be called.
+Similar to the `*` delimiter in Python 3.0.0 for Keyword-Only args), a `/` delimiter was added to clearly delineate Positional-Only (or conversely Keyword-Only args) in function or method definitions. This makes the three cases of function arguments unambigious in how they should be called.
 
 Here's a few examples:
 
@@ -162,7 +162,7 @@ def f3(a, b, /, *, c=1234):
     return a + b + c
 ```
 
-Combining the `/` and `*` with the type annotations yeilds:
+Combining the `/` and `*` with the type annotations yields:
 
 ```python
 def f4(a:int, b:int, /, *, c:int=1234):
@@ -217,7 +217,7 @@ Also, it's worth noting that both scipy and numpy have been using this `/` [styl
 
 If you're a library developer that has packages on [PyPi](https://pypi.org), it might not be clear when it's "safe" to start leveraging these features. I was only able to find one source of Python 3 adoption and as a result, I'm only able outline a **very crude model**.
 
-On December 23, 2016, Python 3.6 was officially released. In the Fall of 2018, [JetBrains release the Python Developer Survey](https://www.jetbrains.com/research/python-developers-survey-2018/#python-3-adoption) which contains the Python 2/3 breakdown, as well as the breakdown of different versions within Python 3. As of Fall 2018, 54% of Python 3 developers were using Python 3.6.x. Therefore, using this very crude model, if you assume that the rate of adoption of 3.6 and 3.8 are the same and if the minimum threshold of adoption of 3.8 is 54%, then you'll need to wait approximately 2 years before starting to leverage these 3.8 features. 
+On December 23, 2016, Python 3.6 was officially released. In the Fall of 2018, [JetBrains release the Python Developer Survey](https://www.jetbrains.com/research/python-developers-survey-2018/#python-3-adoption) which contains the Python 2/3 breakdown, as well as the breakdown of different versions within Python 3. As of the Fall 2018, 54% of Python 3 developers were using Python 3.6.x. Therefore, using this very crude model, if you assume that the rate of adoption of 3.6 and 3.8 are the same and if the minimum threshold of adoption of 3.8 is 54%, then you'll need to wait approximately 2 years before starting to leverage these 3.8 features. 
 
 
 <img src="https://github.com/mpkocher/mpkocher.github.io/blob/master/images/jetbrains_python_survey_2018.png?raw=true" alt="Jetbrains Python Survey" height="600">
@@ -234,8 +234,11 @@ setup(python_requires='>=3.8')
 
 - Python 3.8 added the "walrus" operator `:=` that enables results of expressions to be used
 - It's recommended reading the [Exceptional Cases](https://www.python.org/dev/peps/pep-0572/#exceptional-cases) for better understanding of where to (and to not) use the `:=` operator.
-- Python 3.8 added Positional-Only function definitions using the `/` delimeter
+- Python 3.8 added Positional-Only function definitions using the `/` delimiter
+- Defining functions with Positional-Only arguments will require a trailing `/` in the definition. E.g., `def adder(n, m, /): return 0`
 - There are changes in the standard lib to communicate. It's not clear how locked down or backward compatible the interfaces were changes. Here's a random example of the function signature of [functools.partial](https://docs.python.org/3.8/library/functools.html#functools.partial) being updated to use `/`.
+- Positional-Only arguments should improve consistency of API calls across Python runtimes (e.g., cpython and pypi)
+- The Positional-Only PEP-570 outlines improvements in performance, however, I wasn't able to find any performance studies on this topic.
 - Migrating to 3.8 might involve potentially breaking API changes based on the usage of `/` in the Python 3.8 standard lib
 - For core library authors of libs on pypi, I would recommend  using the crude approximation (described above) of approximately 2 years away from being able to adopt the new 3.8 features
 - For `mypy` users, you might want to make sure you investigate the supported versions of Python 3.8 ([More Details](https://github.com/python/mypy/issues/6545) on the compatiblity matrix)
