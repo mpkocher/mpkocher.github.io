@@ -22,7 +22,6 @@ copyright: # the copyright text in the footer, could be richtext
 # There are also some special link items representing in string: 'categories', 'tags' and 'archives'
 nav:
   -
-    - categories # display a collapsible category list
     - tags       # display a collapsible tag list
     - archives   # display a collapsible archive list
   -
