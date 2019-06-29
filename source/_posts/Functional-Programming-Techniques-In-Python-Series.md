@@ -10,6 +10,8 @@ tags:
 
 This is a 4 Part Series that explores functional centric design style and patterns in Python.
 
+{% gist 9896022 %}
+
 [Part 1](https://mpkocher.github.io/2019/01/30/Functional-Python-Part-1/) ([notebook](https://gist.github.com/mpkocher/d1948e54c7863b1548ec4639df44b954)) starts with different mechanisms of how to define functions in Python and quickly moves to using [closures](https://en.wikipedia.org/wiki/Closure_(computer_programming)) and `functools.partial`. We then move on to adding `functools.reduce` and  composition with [compose](https://gist.github.com/mpkocher/9896022) to our toolbox. Finally, we conclude with adding lazy `map` and `filter` to our toolbox and create a data pipeline that takes a stream of records to compute common statics using a max heap as the reducer. 
 
 In [Part 2](https://mpkocher.github.io/2019/02/02/Functional-Python-Part-2/) ([notebook](https://gist.github.com/mpkocher/517d9e72536346de505bff47199a9b24)), we explore building a REST client using functional-centric design style. Using an iterative approach, we build up a REST client using small functions leveraging clsoures and passing functions as first class citizens to methods. To conclude, we wrap the API and expose the REST client via a simple Python class.
