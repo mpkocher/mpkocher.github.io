@@ -12,17 +12,19 @@ I studied Chemistry and Physics as an undergrad and got my Ph.D. in Material Sci
 
 A few languages, libs and tools I Enjoy: Scala, Akka, Python, R, Postgres, Javascript/Typescript, React. 
 
-A few open source projects that I have contributed to. Several Most of these libs/tools are currently used in production code.
-
-
-- [pbcommand](https://github.com/mpkocher/pbcommand)
-- [pbsmrtpipe](https://github.com/mpkocher/pbsmrtpipe)
-- [smrtflow](https://github.com/mpkocher/smrtflow)
-- [pbcoretools](https://github.com/mpkocher/pbcoretools)
-- [pbreports](https://github.com/mpkocher/pbreports)
-- [pymatgen](https://github.com/materialsproject/pymatgen)
-
-
 ## Series
 
 - [Functional Programming Techniques (FPT) in Python](https://mpkocher.github.io/2019/03/01/Functional-Programming-Techniques-In-Python-Series/)
+
+## OSS Projects
+
+A few open source projects that I have contributed to. Several Most of these libs/tools are currently used in production code.
+
+{% githubCard user:materialsproject repo:pymatgen %}
+{% githubCard user:mpkocher repo:pbcommand %}
+{% githubCard user:mpkocher repo:pbcommandR %}
+{% githubCard user:mpkocher repo:pbsmrtpipe %}
+{% githubCard user:mpkocher repo:smrtflow %}
+{% githubCard user:mpkocher repo:pbcoretools %}
+{% githubCard user:mpkocher repo:pbreports %}
+
