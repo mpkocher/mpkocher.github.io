@@ -44,6 +44,9 @@ nav:
     -
       name: Github
       url: https://github.com/mpkocher
+    -
+      name: Gists
+      url: https://gist.github.com/mpkocher
     - 
       name: LinkedIn
       url: https://www.linkedin.com/in/michael-kocher-b4bba5122/   
