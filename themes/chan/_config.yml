@@ -31,6 +31,9 @@ nav:
     -
       name: By Year
       url: /archives
+    -
+      name: Functional Programming Techniques in Python
+      url: /2019/03/01/Functional-Programming-Techniques-In-Python-Series/
   -
     -
       name: About
