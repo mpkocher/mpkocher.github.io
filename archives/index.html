@@ -92,14 +92,14 @@
             
               <li class="tag-list-container">
                 <a href="javascript:;">Tag</a>
-                <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/FPT/">FPT</a><span class="tag-list-count">5</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/functional/">functional</a><span class="tag-list-count">5</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/lbl/">lbl</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/materials-project/">materials-project</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/pacbio/">pacbio</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/python/">python</a><span class="tag-list-count">9</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/scala/">scala</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/series/">series</a><span class="tag-list-count">1</span></li></ul>
+                <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/FPT/">FPT</a><span class="tag-list-count">5</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/functional/">functional</a><span class="tag-list-count">5</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/lbl/">lbl</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/materials-project/">materials-project</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mypy/">mypy</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/pacbio/">pacbio</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/python/">python</a><span class="tag-list-count">10</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/scala/">scala</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/series/">series</a><span class="tag-list-count">1</span></li></ul>
               </li>
             
           
             
               <li class="archive-list-container">
                 <a href="javascript:;">Archive</a>
-                <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/">2019</a><span class="archive-list-count">8</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/">2017</a><span class="archive-list-count">3</span></li></ul>
+                <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/">2019</a><span class="archive-list-count">9</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/">2017</a><span class="archive-list-count">3</span></li></ul>
               </li>
             
           
@@ -187,6 +187,93 @@
           <h1><a href="/archives/2019" class="archive-year">2019</a></h1>
         </div>
         <div class="post-list">
+    
+  
+
+    <div class="post-list-item article">
+      <h3 class="article-header">
+        <a href="/2019/09/19/Exploring-TypedDict-in-Python-3-8/" >
+  Exploring TypedDict in Python 3.8
+</a>
+
+      </h3>
+      
+
+      <div class="article-info">
+        <a href="/2019/09/19/Exploring-TypedDict-in-Python-3-8/"><span class="article-date">
+  2019-09-19
+</span>
+</a>
+        
+
+        
+	<span class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/mypy/">mypy</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/python/">python</a></li></ul>
+	</span>
+
+
+      </div>
+      <div class="article-entry">
+        
+          <p>This post will explore the new <code>TypedDict</code> feature in Python and explore leveraging <code>TypedDict</code> combined with the static analysis tool <a href="https://github.com/python/mypy" target="_blank" rel="external"><code>mypy</code></a> to improve the robustness of your Python code.</p>
+<h2 id="PEP-589"><a href="#PEP-589" class="headerlink" title="PEP-589"></a>PEP-589</h2><p><code>TypedDict</code> was proposed in <a href="https://www.python.org/dev/peps/pep-0589/" target="_blank" rel="external">PEP-589</a> and accepted in Python 3.8.</p>
+<p>A few key quotes from PEP-589 can provide context and motivation for the problem that <code>TypedDict</code> is attempting to address.</p>
+<blockquote>
+<p>This PEP proposes a type constructor typing.TypedDict to support the use case where a dictionary object has a specific set of string keys, each with a value of a specific type.</p>
+<p>More generally, representing pure data objects using only Python primitive types such as dictionaries, strings and lists has had certain appeal. They are are easy to serialize and deserialize even when not using JSON. They trivially support various useful operations with no extra effort, including pretty-printing (through str() and the pprint module), iteration, and equality comparisons.</p>
+</blockquote>
+<p>This particular section of the PEP is interesting and suggests that <code>TypedDict</code> can be particularly useful for retrofitting legacy code (with type annotations). </p>
+<blockquote>
+<p>Dataclasses are a more recent alternative to solve this use case, but there is still a lot of existing code that was written before dataclasses became available, especially in large existing codebases where type hinting and checking has proven to be helpful. Unlike dictionary objects, dataclasses don’t directly support JSON serialization, though there is a third-party package that implements it</p>
+</blockquote>
+<p>The reference implementation was defined in <a href="https://github.com/python/mypy_extensions" target="_blank" rel="external">mypy_extensions</a> and can be installed in Python 3.7 (e.g., <code>pip install mypy_extensions</code>), or using <code>typing.TypedDict</code> in Python 3.8. </p>
+<p>These following examples are run with <code>mypy</code> 0.711 and examples shown below can be obtained from <a href="https://gist.github.com/mpkocher/e123aa0613242715717d291f9df7afdd" target="_blank" rel="external">this gist</a>.</p>
+<h2 id="Motivation-Dictionary-Mania"><a href="#Motivation-Dictionary-Mania" class="headerlink" title="Motivation: Dictionary-Mania"></a>Motivation: Dictionary-Mania</h2><p>Here’s a common example where a type-checking tool (e.g., <code>mypy</code>) won’t be able to help you catch type errors in your code.</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">example_0</span><span class="params">()</span> -&gt; int:</span></div><div class="line">    <span class="string">"""Simple Example of Using raw dict and how mypy won't catch</span></div><div class="line"><span class="string">    these errors with the keys</span></div><div class="line"><span class="string">    """</span></div><div class="line"></div><div class="line">    m = dict(name=<span class="string">'Star Wars'</span>, year=<span class="number">1234</span>)</div><div class="line"></div><div class="line">    <span class="comment"># mypy will NOT catch this error</span></div><div class="line">    t = m[<span class="string">'name'</span>] + <span class="number">100</span></div></pre></td></tr></table></figure>
+<p>However, with <code>TypedDict</code>, you can define this a structural-typing-ish interface to <code>dict</code> for a specific data model.</p>
+<p>Using Python &lt; 3.8 will require <code>from mypy_extensions import TypedDict</code> whereas, Python &gt;= 3.8 will require <code>from typing import TypedDict</code>.</p>
+<p>Let’s create a simple <code>Movie</code> data model example and explore how <code>mypy</code> can be used to help catch type errors.</p>
+<h2 id="Example-1-Basic-Usage-of-TypedDict"><a href="#Example-1-Basic-Usage-of-TypedDict" class="headerlink" title="Example 1: Basic Usage of TypedDict"></a>Example 1: Basic Usage of TypedDict</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">Movie</span><span class="params">(TypedDict)</span>:</span></div><div class="line">    name: str</div><div class="line">    year: int</div><div class="line"></div><div class="line"></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">example_01</span><span class="params">()</span>:</span></div><div class="line">    m = Movie(name=<span class="string">'Star Wars'</span>, year=<span class="number">1977</span>)</div><div class="line">    <span class="comment"># or</span></div><div class="line">    m2:Movie = dict(name=<span class="string">'Star Wars'</span>, year=<span class="number">1977</span>)</div><div class="line"></div><div class="line">    <span class="comment"># the type checker will catch this</span></div><div class="line">    n = m[<span class="string">'name'</span>] + <span class="number">100</span></div></pre></td></tr></table></figure>
+<p>To enable runnable code that <strong>purposely has errors</strong> that can be caught by <code>mypy</code>, let’s define a helper function to require a specific <code>Exception</code> type to be raised. </p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">import</span> logging</div><div class="line">log = logging.getLogger(__name__)</div><div class="line"></div><div class="line"></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">log_expected_error</span><span class="params">(ex, fx)</span>:</span></div><div class="line">    raised_error = <span class="keyword">False</span></div><div class="line">    <span class="keyword">try</span>:</div><div class="line">        <span class="keyword">return</span> fx()</div><div class="line">    <span class="keyword">except</span> ex <span class="keyword">as</span> e:</div><div class="line">        raised_error = <span class="keyword">True</span></div><div class="line">        log.info(<span class="string">f"Got Expected error `<span class="subst">&#123;e&#125;</span>` of type <span class="subst">&#123;ex&#125;</span> from <span class="subst">&#123;fx.__name__&#125;</span>"</span>)</div><div class="line">    <span class="keyword">finally</span>:</div><div class="line">        <span class="keyword">if</span> <span class="keyword">not</span> raised_error:</div><div class="line">            log.error(<span class="string">f"Expected <span class="subst">&#123;fx&#125;</span> to raise <span class="subst">&#123;ex&#125;</span>"</span>)</div></pre></td></tr></table></figure>
+<h2 id="Example-2-Exploring-Mutating-and-Assignment-of-TypedDicts"><a href="#Example-2-Exploring-Mutating-and-Assignment-of-TypedDicts" class="headerlink" title="Example 2: Exploring Mutating and Assignment of TypedDicts"></a>Example 2: Exploring Mutating and Assignment of TypedDicts</h2><p>Let’s mutate the <code>Movie</code> <code>TypedDict</code> instance and explore how <code>mypy</code> can catch type errors during assignment.</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">example_02</span><span class="params">()</span> -&gt; int:</span></div><div class="line">    m = Movie(name=<span class="string">'Star Wars'</span>, year=<span class="number">1977</span>)</div><div class="line">    log.info(m)</div><div class="line"></div><div class="line">    <span class="comment"># mypy will catch this</span></div><div class="line">    m[<span class="string">'name'</span>] = <span class="number">11111</span></div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">f</span><span class="params">()</span> -&gt; int:</span></div><div class="line">        m[<span class="string">'year'</span>] = m[<span class="string">'year'</span>] + <span class="string">'asfdsasdf'</span></div><div class="line">        <span class="keyword">return</span> <span class="number">0</span></div><div class="line"></div><div class="line">    log_expected_error(TypeError, f)</div><div class="line"></div><div class="line">    <span class="comment"># Use dict methods to mutate</span></div><div class="line">    <span class="comment"># Note, current verison of mypy is confused</span></div><div class="line">    <span class="comment"># by this and generates `"Movie" has no attribute "clear"`</span></div><div class="line">    m.clear()</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">f2</span><span class="params">()</span> -&gt; int:</span></div><div class="line">        <span class="comment"># mypy won't catch this KeyError from .clear()</span></div><div class="line">        <span class="keyword">return</span> m[<span class="string">'year'</span>] + <span class="number">100</span></div><div class="line"></div><div class="line">    log_expected_error(KeyError, f2)</div><div class="line"></div><div class="line">    <span class="comment"># Can we mix Movie and a raw dict?</span></div><div class="line">    d2 = dict(extras=<span class="keyword">True</span>, alpha=<span class="number">1234</span>, name=<span class="number">12345</span>, year=<span class="string">'1978'</span>)</div><div class="line"></div><div class="line">    <span class="comment"># mypy will raise TypeError here</span></div><div class="line">    m.update(d2)</div><div class="line"></div><div class="line">    log.info(m)</div><div class="line"></div><div class="line">    <span class="comment"># Update a Movie with a Movie</span></div><div class="line">    m2 = Movie(name=<span class="string">'Star Wars'</span>, year=<span class="number">1977</span>)</div><div class="line">    new_m = Movie(name=<span class="string">'Movie Title'</span>, year=<span class="number">1234</span>)</div><div class="line"></div><div class="line">    <span class="comment"># Both of these are proper Movie TypedDict</span></div><div class="line">    <span class="comment"># hence, no mypy type error</span></div><div class="line">    m.update(new_m)</div><div class="line">    log.info(m2)</div></pre></td></tr></table></figure>
+<p>There’s a few interesting items to note.</p>
+<ul>
+<li><code>mypy</code> will catch assignment errors </li>
+<li>The current version of <code>mypy</code> will get a bit confused with <code>dict</code> methods, such as <code>.clear()</code>. Moreover, <code>.clear()</code> will also yield <code>KeyError</code>s (related, see <code>total=False</code> keyword of the <code>TypedDict</code>)</li>
+<li><code>mypy</code> will only allow merging dicts that are the same type. You can’t mix <code>TypedDict</code> and a raw dict without <code>mypy</code> raising an issue</li>
+</ul>
+<h2 id="Example-3-TypedDicts-total-Keyword-Argument"><a href="#Example-3-TypedDicts-total-Keyword-Argument" class="headerlink" title="Example #3: TypedDicts total Keyword Argument"></a>Example #3: TypedDicts total Keyword Argument</h2><p>There’s a <code>total</code> keyword to the <code>TypedDict</code> that communicates that the dict does not need to be completely well formed. This is particularly interesting in how the <code>mypy</code> interpets the types. </p>
+<p>For example, <code>X</code> with <code>alpha</code>, <code>beta</code> and <code>gamma</code> as <code>int</code>s, will be</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">X</span><span class="params">(TypedDict, total=False)</span>:</span></div><div class="line">    alpha:int</div><div class="line">    beta:int</div><div class="line">    gamma:int</div><div class="line"></div><div class="line">x:X = dict()</div><div class="line">x[<span class="string">'alpha'</span>] = <span class="number">1</span></div><div class="line">x[<span class="string">'beta'</span>] = <span class="number">2</span></div><div class="line">x[<span class="string">'gamma'</span>] = <span class="number">3</span></div></pre></td></tr></table></figure>
+<p>Lets dive deeper using a variation of the previously defined <code>Movie</code> example using <code>total=False</code> to explore how <code>mypy</code> interprets the ‘incomplete’ data model.</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">Movie2</span><span class="params">(TypedDict, total=False)</span>:</span></div><div class="line">    name:str</div><div class="line">    year:int</div><div class="line">    release_year: Optional[int]</div><div class="line"></div><div class="line"></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">example_03</span><span class="params">()</span> -&gt; int:</span></div><div class="line">    <span class="string">"""</span></div><div class="line"><span class="string">    Explore with defining an 'incomplete' Movie data model and how</span></div><div class="line"><span class="string">    None/Null checking works with mypy</span></div><div class="line"><span class="string">    """</span></div><div class="line"></div><div class="line">    m = Movie2(name=<span class="string">'Star Wars'</span>)</div><div class="line">    log.info(m)</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">f</span><span class="params">()</span> -&gt; int:</span></div><div class="line">        <span class="comment"># mypy will catch this</span></div><div class="line">        m[<span class="string">'name'</span>] = <span class="number">1234</span></div><div class="line">        <span class="keyword">return</span> <span class="number">0</span></div><div class="line"></div><div class="line">    <span class="comment"># Use dict methods to mutate</span></div><div class="line">    <span class="comment"># mypy is confused by this. The error is:</span></div><div class="line">    <span class="comment"># `"Movie" has no attribute "clear"`</span></div><div class="line">    m.clear()</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">f2</span><span class="params">()</span> -&gt; int:</span></div><div class="line">        <span class="comment"># mypy doesn't catch this NPE</span></div><div class="line">        <span class="comment"># I don't think it treats the type</span></div><div class="line">        <span class="comment"># as Optional[int]</span></div><div class="line">        m[<span class="string">'year'</span>] = m[<span class="string">'year'</span>] + <span class="number">100</span></div><div class="line">        <span class="keyword">return</span> <span class="number">0</span></div><div class="line"></div><div class="line">    log_expected_error(KeyError, f2)</div><div class="line"></div><div class="line">    <span class="comment"># Explicit test with release_year which</span></div><div class="line">    <span class="comment"># is fundamentally Optional[int]</span></div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">f3</span><span class="params">()</span> -&gt; int:</span></div><div class="line">        <span class="comment"># mypy WILL catch this NPE</span></div><div class="line">        m[<span class="string">'release_year'</span>] = m[<span class="string">'release_year'</span>] + <span class="number">100</span></div><div class="line">        <span class="keyword">return</span> <span class="number">0</span></div><div class="line"></div><div class="line">    log_expected_error(KeyError, f3)</div><div class="line"></div><div class="line"></div><div class="line">    <span class="comment"># This works as expected and</span></div><div class="line">    m2 = Movie2(name=<span class="string">'Star Wars'</span>, release_year=<span class="number">2049</span>)</div><div class="line"></div><div class="line">    <span class="comment"># This works as expected and mypy won't raise an error</span></div><div class="line">    <span class="keyword">if</span> m2[<span class="string">'release_year'</span>] <span class="keyword">is</span> <span class="keyword">not</span> <span class="keyword">None</span>:</div><div class="line">        t = m2[<span class="string">'release_year'</span>] + <span class="number">10</span></div></pre></td></tr></table></figure>
+<p>Finally, let’s explore how <code>isinstance</code> works with <code>TypedDict</code></p>
+<h2 id="Example-4-TypedDict-and-isinstance"><a href="#Example-4-TypedDict-and-isinstance" class="headerlink" title="Example 4: TypedDict and isinstance"></a>Example 4: TypedDict and isinstance</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">example_04</span><span class="params">()</span> -&gt; int:</span></div><div class="line">    <span class="string">"""Testing isinstance"""</span></div><div class="line"></div><div class="line">    m = Movie(name=<span class="string">'Movie'</span>, year=<span class="number">1234</span>)</div><div class="line"></div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">f</span><span class="params">()</span> -&gt; int:</span></div><div class="line">        is_true = isinstance(m, dict)</div><div class="line">        <span class="keyword">return</span> <span class="number">0</span></div><div class="line"></div><div class="line"></div><div class="line">    <span class="comment"># This is a bit unexpected that this</span></div><div class="line">    <span class="comment"># will raise an exception at runtime</span></div><div class="line">    <span class="comment"># ` Cannot use isinstance() with a TypedDict type`</span></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">f2</span><span class="params">()</span> -&gt; int:</span></div><div class="line">        is_true = isinstance(m, Movie)</div><div class="line">        <span class="keyword">return</span> <span class="number">0</span></div><div class="line"></div><div class="line">    log_expected_error(TypeError, f2)</div></pre></td></tr></table></figure>
+<p>The important item to note here is that you can NOT use <code>isinstance</code> with <code>TypedDict</code>. Python will raise a runtime error of <code>TypeError</code>. Specifically the error you’ll see is show below.</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">TypeError: TypedDict does not support instance and class checks</div></pre></td></tr></table></figure>
+<h1 id="Summary"><a href="#Summary" class="headerlink" title="Summary"></a>Summary</h1><ul>
+<li><code>TypedDict</code> + <code>mypy</code> can be valuable to help catch type errors in Python and can help with heavy dictionary-centric interfaces in your application or library</li>
+<li><code>TypedDict</code> can be used in Python 3.7 using <code>mypy_extensions</code> package</li>
+<li><code>TypedDict</code> can be used in Python 2.7 using <code>mypy_extensions</code> and the 2.7 ‘namedtuple-esque’ syntax style (e.g., <code>Movie = TypedDict(&#39;Movie&#39;, {&#39;title&#39;:str, year:int})</code>)</li>
+<li>Using the <code>total=False</code> keyword to <code>TypedDict</code> can introduce large wholes the static typechecking process yielding <code>KeyError</code>s. The keyword <code>total=False</code> should be used judiciously (if at all)</li>
+<li><code>isinstance</code> should <strong>not</strong> be used with <code>TypedDict</code> as it will raise a runtime <code>TypeError</code> exception</li>
+<li>Be mindful when using <code>TypeDict</code> methods such as <code>clear()</code></li>
+<li><code>TypeDict</code> introduces a new (somewhat) competing data modeling alternative to <a href="https://docs.python.org/3/library/dataclasses.html" target="_blank" rel="external">dataclasses</a>, <a href="https://docs.python.org/3/library/typing.html#typing.NamedTuple" target="_blank" rel="external">typing.NamedTuple</a>, “classic” classes and third-party libraries, such as <a href="https://github.com/samuelcolvin/pydantic" target="_blank" rel="external">pydantic</a> and <a href="https://github.com/python-attrs/attrs" target="_blank" rel="external">attrs</a>. It’s not completely clear to me how all these different competing data model abstractions models are going to age gracefully</li>
+</ul>
+<p>I believe <code>TypedDict</code> can be a value tool to help improve clarity of interfaces, specifically in legacy code that is a bit <strong>dictionary-mania</strong> heavy. However, for new code, I would suggest avoid using <code>TypedDict</code> in favor of the thin data models, such as <a href="https://github.com/samuelcolvin/pydantic" target="_blank" rel="external">pydantic</a> and <a href="https://github.com/python-attrs/attrs" target="_blank" rel="external">attrs</a>. </p>
+<p>Best to you and your Python-ing. </p>
+<p>P.S. A runnable form of the code used in the post can be found in this <a href="https://gist.github.com/mpkocher/e123aa0613242715717d291f9df7afdd" target="_blank" rel="external">gist</a>.</p>
+
+        
+      </div>
+    </div>
+
+  
+
+  
+  
     
   
 
@@ -692,84 +779,6 @@
 <li>R for data exploration and visualization utilizing the most excellent <a href="https://dplyr.tidyverse.org/" target="_blank" rel="external">dplyr</a> and <a href="https://ggplot2.tidyverse.org" target="_blank" rel="external">ggplot2</a></li>
 <li>Exploring <a href="https://www.python.org/dev/peps/" target="_blank" rel="external">Python PEP</a>s &gt;= 3.8 to better understand the direction and future iterations of the Python Programming Language</li>
 </ul>
-
-        
-      </div>
-    </div>
-
-  
-
-  
-  
-    
-  
-
-    <div class="post-list-item article">
-      <h3 class="article-header">
-        <a href="/2017/09/04/About/" >
-  About
-</a>
-
-      </h3>
-      
-
-      <div class="article-info">
-        <a href="/2017/09/04/About/"><span class="article-date">
-  2017-09-04
-</span>
-</a>
-        
-
-        
-	<span class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/lbl/">lbl</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/materials-project/">materials-project</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/pacbio/">pacbio</a></li></ul>
-	</span>
-
-
-      </div>
-      <div class="article-entry">
-        
-          <p>I studied Chemistry and Physics as an undergraduate and got my Ph.D. in Material Science specializing in the Electronic Structure of Lithium Transition Metal Oxides for lithium-ion batteries. Following graduation, I did a post-doc at <a href="https://www.lbl.gov/" target="_blank" rel="external">Lawrenece Berkeley National Lab</a> and was a core member of the original <a href="https://materialsproject.org/" target="_blank" rel="external">Materials Project</a> team from 2009-2012. In April of 2012, I joined <a href="https://www.pacb.com/" target="_blank" rel="external">Pacific Biosciences</a> to work in the Secondary Analysis Team in the R&amp;D division. In late October of 2018, I decided to take some time off to travel and work on a few side projects. </p>
-<p>A few languages, libs and tools I Enjoy: Scala, Akka, Python, R, Postgres, Javascript/Typescript, React. </p>
-<h2 id="Series"><a href="#Series" class="headerlink" title="Series"></a>Series</h2><ul>
-<li><a href="https://mpkocher.github.io/2019/03/01/Functional-Programming-Techniques-In-Python-Series/">Functional Programming Techniques (FPT) in Python</a></li>
-</ul>
-<h2 id="OSS-Projects"><a href="#OSS-Projects" class="headerlink" title="OSS Projects"></a>OSS Projects</h2><p>A few open source projects that I have contributed to. Several Most of these libs/tools are currently used in production code.</p>
-<div style="text-align:center">
-  <div class="github-card" data-user="materialsproject" data-repo="pymatgen" data-width="400" data-theme="default" data-target="" data-client-id="" data-client-secret=""></div>
-</div>
-<script src="/github-card-lib/githubcard.js"></script>
-
-<div style="text-align:center">
-  <div class="github-card" data-user="mpkocher" data-repo="pbcommand" data-width="400" data-theme="default" data-target="" data-client-id="" data-client-secret=""></div>
-</div>
-<script src="/github-card-lib/githubcard.js"></script>
-
-<div style="text-align:center">
-  <div class="github-card" data-user="mpkocher" data-repo="pbcommandR" data-width="400" data-theme="default" data-target="" data-client-id="" data-client-secret=""></div>
-</div>
-<script src="/github-card-lib/githubcard.js"></script>
-
-<div style="text-align:center">
-  <div class="github-card" data-user="mpkocher" data-repo="pbsmrtpipe" data-width="400" data-theme="default" data-target="" data-client-id="" data-client-secret=""></div>
-</div>
-<script src="/github-card-lib/githubcard.js"></script>
-
-<div style="text-align:center">
-  <div class="github-card" data-user="mpkocher" data-repo="smrtflow" data-width="400" data-theme="default" data-target="" data-client-id="" data-client-secret=""></div>
-</div>
-<script src="/github-card-lib/githubcard.js"></script>
-
-<div style="text-align:center">
-  <div class="github-card" data-user="mpkocher" data-repo="pbcoretools" data-width="400" data-theme="default" data-target="" data-client-id="" data-client-secret=""></div>
-</div>
-<script src="/github-card-lib/githubcard.js"></script>
-
-<div style="text-align:center">
-  <div class="github-card" data-user="mpkocher" data-repo="pbreports" data-width="400" data-theme="default" data-target="" data-client-id="" data-client-secret=""></div>
-</div>
-<script src="/github-card-lib/githubcard.js"></script>
-
 
         
       </div>
