@@ -6,8 +6,6 @@ tags:
     - "scala-cli"
     - zio
 ---
-# Creating CLI tools leveraging ZIO and Decline using scala-cli
-
 Here's a quick overview and demonstration of kicking the tires on ZIO 1.x + [decline](https://github.com/bkirwi/decline) (commandline argument parser) using `scala-cli` (version 0.1.6) to build commandline tools.
 
 - https://scala-cli.virtuslab.org
