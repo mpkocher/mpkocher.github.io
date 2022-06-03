@@ -112,7 +112,7 @@ val mainOpt: Opts[RIO[Console, Unit]] =
 In addition to composing using `mapN`, there's `orElse` which enables composing "actions". For example, enabling `--version` to run (if provided) *or* run the "main" application.
 
 ```scala
-val mainOpts = versionOpt orElse mainOpt
+val runOpt = versionOpt orElse mainOpt
 ```
 These composed `Opts` can be used in a `Command` that will handled `--help` and be central point where `Command.parse` can be called. 
 
