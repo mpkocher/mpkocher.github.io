@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+
+
+<title>
+  
+    Dataclasses in Python 3.7
+  
+</title>
+
+<meta name="description" content="TDLR: Initially, I was interested in the dataclasses feature that was added to Python 3.7 standard library. However after a closer look, It’s not clear to me if dataclasses provide enough value. Third">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Dataclasses in Python 3.7">
+<meta property="og:url" content="http://mpkocher.github.io/2019/05/22/Dataclasses-in-Python-3-7/index.html">
+<meta property="og:site_name">
+<meta property="og:description" content="TDLR: Initially, I was interested in the dataclasses feature that was added to Python 3.7 standard library. However after a closer look, It’s not clear to me if dataclasses provide enough value. Third">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2019-05-23T03:52:43.000Z">
+<meta property="article:modified_time" content="2022-06-03T04:21:51.651Z">
+<meta property="article:tag" content="python">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:creator" content="@https:&#x2F;&#x2F;twitter.com&#x2F;ElevenPhonons">
+
+
+  <link rel="alternative" href="/atom.xml" title="" type="application/atom+xml">
+
+
+
+  <link rel="icon" href="/favicon.png">
+
+
+
+<link rel="stylesheet" href="/perfect-scrollbar/css/perfect-scrollbar.min.css">
+
+
+<link rel="stylesheet" href="/styles/main.css">
+
+
+
+  <!-- Google Analytics -->
+  <script type="text/javascript">
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-141397134-1', 'auto');
+    ga('send', 'pageview');
+
+  </script>
+  <!-- End Google Analytics -->
+
+
+
+
+
+<meta name="generator" content="Hexo 6.2.0"></head>
+<body
+  
+    class="monochrome"
+  
+  >
+  <div class="mobile-header">
+  <button class="sidebar-toggle" type="button">
+    <span class="icon-bar"></span>
+    <span class="icon-bar"></span>
+    <span class="icon-bar"></span>
+  </button>
+  <a class="title" href="/"></a>
+</div>
+
+  <div class="main-container">
+    <div class="sidebar">
+  <div class="header">
+    <h1 class="title"><a href="/"></a></h1>
+    
+    <div class="info">
+      <div class="content">
+        
+        
+      </div>
+      
+        <div class="avatar">
+          
+            <a href="/2017/09/04/About"><img src="https://avatars3.githubusercontent.com/u/868552?v=4&amp;s=460"></a>
+          
+        </div>
+      
+    </div>
+  </div>
+  <div class="body">
+    
+      
+        <ul class="nav">
+          
+            
+              <li class="tag-list-container">
+                <a href="javascript:;">Tag</a>
+                <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/FPT/" rel="tag">FPT</a><span class="tag-list-count">5</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/functional/" rel="tag">functional</a><span class="tag-list-count">5</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/lbl/" rel="tag">lbl</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/materials-project/" rel="tag">materials-project</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mypy/" rel="tag">mypy</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/pacbio/" rel="tag">pacbio</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/python/" rel="tag">python</a><span class="tag-list-count">10</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/scala/" rel="tag">scala</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/scala-cli/" rel="tag">scala-cli</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/series/" rel="tag">series</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/zio/" rel="tag">zio</a><span class="tag-list-count">1</span></li></ul>
+              </li>
+            
+          
+            
+              <li class="archive-list-container">
+                <a href="javascript:;">Archive</a>
+                <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/">2022</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/">2019</a><span class="archive-list-count">9</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/">2017</a><span class="archive-list-count">3</span></li></ul>
+              </li>
+            
+          
+        </ul>
+      
+        <ul class="nav">
+          
+            
+              <li>
+                <a href="/" title="Homepage" external="false">Homepage</a>
+              </li>
+            
+          
+            
+              <li>
+                <a href="/archives" title="By Year" external="false">By Year</a>
+              </li>
+            
+          
+            
+              <li>
+                <a href="/2019/03/01/Functional-Programming-Techniques-In-Python-Series/" title="Functional Programming Techniques in Python" external="false">Functional Programming Techniques in Python</a>
+              </li>
+            
+          
+        </ul>
+      
+        <ul class="nav">
+          
+            
+              <li>
+                <a href="/2017/09/04/About/" title="About" external="false">About</a>
+              </li>
+            
+          
+            
+              <li>
+                <a href="https://github.com/mpkocher/cv/blob/master/academic/cv.pdf" title="CV" target="_blank" rel="noopener">CV</a>
+              </li>
+            
+          
+            
+              <li>
+                <a href="https://github.com/mpkocher" title="Github" target="_blank" rel="noopener">Github</a>
+              </li>
+            
+          
+            
+              <li>
+                <a href="https://gist.github.com/mpkocher" title="Gists" target="_blank" rel="noopener">Gists</a>
+              </li>
+            
+          
+            
+              <li>
+                <a href="https://www.linkedin.com/in/michael-kocher-b4bba5122/" title="LinkedIn" target="_blank" rel="noopener">LinkedIn</a>
+              </li>
+            
+          
+            
+              <li>
+                <a href="https://twitter.com/ElevenPhonons" title="Twitter" target="_blank" rel="noopener">Twitter</a>
+              </li>
+            
+          
+            
+              <li>
+                <a href="/2017/09/04/Now" title="Now" external="false">Now</a>
+              </li>
+            
+          
+            
+              <li>
+                <a href="/atom.xml" title="RSS" external="false">RSS</a>
+              </li>
+            
+          
+        </ul>
+      
+    
+  </div>
+</div>
+
+    <div class="main-content">
+      
+        <div style="max-width: 1000px">
+      
+          <article id="post-Dataclasses-in-Python-3-7" class="article article-type-post">
+  
+    <h1 class="article-header">
+      Dataclasses in Python 3.7
+    </h1>
+  
+  
+
+  <div class="article-info">
+    <span class="article-date">
+  2019-05-22
+</span>
+
+    
+
+    
+	<span class="article-tag tagcloud">
+		<ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/python/" rel="tag">python</a></li></ul>
+	</span>
+
+
+  </div>
+  <div class="article-entry">
+    <p>TDLR: Initially, I was interested in the <code>dataclasses</code> feature that was added to Python 3.7 standard library. However after a closer look, It’s not clear to me if <code>dataclasses</code> provide enough value. Third-party libraries such as <a target="_blank" rel="noopener" href="https://github.com/python-attrs/attrs">attrs</a> and <a target="_blank" rel="noopener" href="https://pydantic-docs.helpmanual.io/">pydantic</a> offer considerably more value. Moreover, by adding <code>dataclasses</code> to the standard library, Python now has 3 (or 4) overlapping mechanisms (namedtuple, <code>typing.NamedTuple</code>, “classic” classes, and dataclasses) for defining a core concept in the Python programming language. </p>
+<p>In Python 3.7, <a target="_blank" rel="noopener" href="https://docs.python.org/3/library/dataclasses.html">dataclasses</a> were added to the standard library. There’s a <a target="_blank" rel="noopener" href="https://www.youtube.com/watch?v=T-TwcmT6Rcw">terrific talk by Raymond Hettinger</a> that is a great introduction to the history and design of <code>dataclasses</code>.</p>
+<p>A demonstration and comparison of the 3 different models is shown below.</p>
+<p>For the demo, I’ll use a <code>Person</code> data model with an id (int), a name (str), and an optional favorite color (Optional[str]). The <code>Person</code> model will also have custom <code>eq</code> and <code>hash</code> using only the <code>Person</code>s <code>id</code>. I’m a fan of immutable classes, so the container data model will be <code>immutable</code> if possible.</p>
+<p>Here’s an example using the “classic” class style leveraging Python 3 type annotations.</p>
+<p>Nothing particularly interesting for any Python dev. We do have to write a bit of boilerplate in the constructor, however, this also enables some convenience translation layers (e.g., converting datetime as a string to datetime instance). I’ve omitted the immutability aspect due to the boilerplate that would be added.</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> typing <span class="keyword">import</span> <span class="type">Optional</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Person</span>(<span class="title class_ inherited__">object</span>):</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, <span class="built_in">id</span>:<span class="built_in">int</span>, name:<span class="built_in">str</span>, favorite_color:<span class="type">Optional</span>[<span class="built_in">str</span>] = <span class="literal">None</span></span>):</span><br><span class="line">        self.<span class="built_in">id</span> = <span class="built_in">id</span></span><br><span class="line">        self.name = name</span><br><span class="line">        self.favorite_color = favorite_color</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__repr__</span>(<span class="params">self</span>):</span><br><span class="line">        <span class="keyword">return</span> <span class="string">&quot;&lt;&#123;&#125; id:&#123;&#125; name:&#123;&#125;&gt;&quot;</span>.<span class="built_in">format</span>(self.__class__.__name__, self.<span class="built_in">id</span>, self.name)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__hash__</span>(<span class="params">self</span>):</span><br><span class="line">        <span class="keyword">return</span> <span class="built_in">hash</span>(self.<span class="built_in">id</span>)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__eq__</span>(<span class="params">self, other</span>):</span><br><span class="line">        <span class="keyword">if</span> self.__class__ == other.__class__:</span><br><span class="line">            <span class="keyword">return</span> self.<span class="built_in">id</span> == other.<span class="built_in">id</span></span><br><span class="line">        <span class="keyword">return</span> <span class="literal">False</span></span><br></pre></td></tr></table></figure>
+
+<p>We can also write this using the <code>typing.NamedTuple</code> (or an untyped version using the Python 2 style <code>collections.namedtuple</code>).</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> typing <span class="keyword">import</span> NamedTuple, <span class="type">Optional</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Person</span>(<span class="title class_ inherited__">NamedTuple</span>):</span><br><span class="line">    <span class="built_in">id</span>:<span class="built_in">int</span></span><br><span class="line">    name:<span class="built_in">str</span></span><br><span class="line">    favorite_color:<span class="type">Optional</span>[<span class="built_in">str</span>] = <span class="literal">None</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__hash__</span>(<span class="params">self</span>):</span><br><span class="line">        <span class="keyword">return</span> <span class="built_in">hash</span>(self.<span class="built_in">id</span>)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__eq__</span>(<span class="params">self, other</span>):</span><br><span class="line">        <span class="keyword">if</span> self.__class__ == other.__class__:</span><br><span class="line">            <span class="keyword">return</span> self.<span class="built_in">id</span> == other.<span class="built_in">id</span></span><br><span class="line">        <span class="keyword">return</span> <span class="literal">False</span></span><br></pre></td></tr></table></figure>
+
+<p>Nothing too interesting here either. This approach does have well understood downsides due to the tuple nature of the underlying design. Specific downsides include index access and comparison operators (e.g., <code>__lte__</code>) which leverage the sortablity of tuples that can potentially introduce unexpected behaviors. </p>
+<p>Let’s use the new Python 3.7 <a target="_blank" rel="noopener" href="https://docs.python.org/3/library/dataclasses.html">dataclasses</a> approach.</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> dataclasses <span class="keyword">import</span> dataclass, field</span><br><span class="line"></span><br><span class="line"><span class="meta">@dataclass(<span class="params">frozen=<span class="literal">True</span></span>)</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Person</span>:</span><br><span class="line">    <span class="built_in">id</span>:<span class="built_in">int</span></span><br><span class="line">    name:<span class="built_in">str</span> = field(<span class="built_in">hash</span>=<span class="literal">False</span>, compare=<span class="literal">False</span>)</span><br><span class="line">    favorite_color: <span class="type">Optional</span>[<span class="built_in">str</span>] = field(default_factory=<span class="keyword">lambda</span> :<span class="literal">None</span>, <span class="built_in">hash</span>=<span class="literal">False</span>, compare=<span class="literal">False</span>)</span><br></pre></td></tr></table></figure>
+
+<p>The <code>dataclasses</code> design is a declarative centric approach yielding a terse and clean interface to define a class in Python. </p>
+<p>It’s important to note that <strong>none of the 3 approaches in the standard lib support any mechanism for type checking at runtime</strong>. The <code>dataclasses</code> API has a <code>__post_init</code> hook that can be used to add any custom validation (typechecking or otherwise).</p>
+<p>I think it’s useful to dig a bit deeper and understand the development requirements, or conversely, the non-goals of the <code>dataclasses</code> API. <a target="_blank" rel="noopener" href="https://www.python.org/dev/peps/pep-0557/#rationale">PEP-557</a> provides some key insights (for context, one of the libraries mention in the quote below is <code>attrs</code>).</p>
+<p>Here’s a few useful snippets from the PEP.</p>
+<blockquote>
+<p>One main design goal of Data Classes is to support static type checkers. The use of PEP 526 syntax is one example of this, but so is the design of the fields() function and the @dataclass decorator. Due to their very dynamic nature, some of the libraries mentioned above are difficult to use with static type checkers.</p>
+</blockquote>
+<p>It’s not clear to me if these “very dynamic” libraries still have an issue with popular static analysis tools such as <code>mypy</code> (as of <code>mypy</code> 0.57, <code>attrs</code> is supported). Nevertheless, it’s very clear from the PEP that there is a strong opinion that Python is a dynamic language and adding types is to annotation functions with metadata for static analysis tools. Adding types is not for runtime type checking, nor is to imply that type signatures are required. </p>
+<p>Another useful snippet to provide context.</p>
+<blockquote>
+<p>Data Classes are not, and are not intended to be, a replacement mechanism for all of the above libraries. But being in the standard library will allow many of the simpler use cases to instead leverage Data Classes. Many of the libraries listed have different feature sets, and will of course continue to exist and prosper.</p>
+</blockquote>
+<p>Historically, Python has a very heavy batteries-included approach to the standard library. To put the size of the standard library into perspective, there’s a recent <a target="_blank" rel="noopener" href="https://www.python.org/dev/peps/pep-0594/">PEP-594</a> to remove “dead batteries” from the standard library. The list of packages to remove is quite interesting. This battery-centric included approach motivates questions about the standard library. </p>
+<ul>
+<li><p>Does the Python standard library need to be any bigger? </p>
+</li>
+<li><p>Why can’t (or shouldn’t) <code>dataclasses</code> style or functionality be off-loaded to the community to develop libraries (e.g., <code>attrs</code> and <code>traitlets</code>)? Is a “half” or “minimal” solution really worth adding enough value?</p>
+</li>
+<li><p>Does Python standard lib need yet another competing mechanism to define a class or data container? </p>
+</li>
+<li><p>Is all of these packages in the standard lib really that useful in practice? For example, is the <a target="_blank" rel="noopener" href="https://docs.python.org/3/library/csv.html">CSV parser</a> used when <code>pandas.read_csv</code> exists? </p>
+</li>
+<li><p>Do these features in the standard library bog down the Python core team?</p>
+</li>
+</ul>
+<p>A recent talk at Python Language Summit in May of 2019, “<a target="_blank" rel="noopener" href="http://pyfound.blogspot.com/2019/05/amber-brown-batteries-included-but.html">Batteries included, But They’re Leaking</a>“ by <a target="_blank" rel="noopener" href="https://twitter.com/hawkieowl">Amber Brown</a> brought up some contentious ideas on the current state of the standard library (in practice, that ship has sailed many moons ago and I’m not sure there’s a lot of constructive discussion that can be had on this topic).</p>
+<p>I don’t really have any solid answers to any of these questions. Two of the most popular and Python libs, <code>requests</code> and <code>numpy</code> are both outside of the standard library (for good reasons that may be orthogonal to motivations of adding <code>dataclasses</code> to the standard library) and are thriving. </p>
+<p>Without hooks at a per <code>field</code> level validation hooks among other features, I’m struggling to find the usefulness of <code>dataclasses</code> for Python developers, particularly in the context of current polished third-party libraries, such as <code>attrs</code>, <code>pydantic</code>, or <code>traitlets</code>. </p>
+<p>For comparison, let’s take a look at the third-party libraries that have inspired <code>dataclasses</code>.</p>
+<h1 id="Third-Party-Libraries"><a href="#Third-Party-Libraries" class="headerlink" title="Third Party Libraries"></a>Third Party Libraries</h1><p>Let’s take a quick look into two of the third-party libraries, <a target="_blank" rel="noopener" href="https://github.com/python-attrs/attrs">attrs</a> and <a target="_blank" rel="noopener" href="https://pydantic-docs.helpmanual.io/">pydantic</a> that inspired <code>dataclasses</code>. I believe both of these libraries are supported by <code>mypy</code>.</p>
+<h2 id="Attrs"><a href="#Attrs" class="headerlink" title="Attrs"></a>Attrs</h2><p>Similar to the <code>dataclasses</code> approach, the types in <code>attrs&#39; </code>are only used as annotations (e.g., <code>__annotations__</code>) and are not enforced at runtime. However, the general validation mechanism trivially enables runtime type validation. For the purposes of this example, let’s also add custom validation on the <code>name</code> of the <code>Person</code> as well as adding type checking.</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> typing <span class="keyword">import</span> <span class="type">Optional</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> attr</span><br><span class="line"><span class="keyword">from</span> attr.validators <span class="keyword">import</span> instance_of <span class="keyword">as</span> vof</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">is_positive_nonzero</span>(<span class="params">instance, attribute, value</span>):</span><br><span class="line">    <span class="keyword">if</span> value &lt; <span class="number">1</span>:</span><br><span class="line">        <span class="keyword">raise</span> ValueError(<span class="string">f&quot;Value <span class="subst">&#123;value&#125;</span> must be &gt;0&quot;</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">check_non_empty_str</span>(<span class="params">inst, attribute, value</span>):</span><br><span class="line">    <span class="keyword">if</span> <span class="keyword">not</span> value:</span><br><span class="line">        <span class="keyword">raise</span> ValueError(<span class="string">&quot;name must be a non-empty string&quot;</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="meta">@attr.s(<span class="params">auto_attribs=<span class="literal">True</span>, frozen=<span class="literal">True</span></span>)</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Person</span>:</span><br><span class="line">    <span class="built_in">id</span>:<span class="built_in">int</span> = attr.ib(validator=[vof(<span class="built_in">int</span>), is_positive_nonzero])</span><br><span class="line">    name:<span class="built_in">str</span> = attr.ib(validator=[vof(<span class="built_in">str</span>), check_non_empty_str])</span><br><span class="line">    favorite_color: <span class="type">Optional</span>[<span class="built_in">str</span>] = attr.ib(default=<span class="literal">None</span>, validator=[vof((<span class="built_in">str</span>, <span class="built_in">type</span>(<span class="literal">None</span>)))])</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__hash__</span>(<span class="params">self</span>):</span><br><span class="line">        <span class="keyword">return</span> <span class="built_in">hash</span>(self.<span class="built_in">id</span>)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__eq__</span>(<span class="params">self, other</span>):</span><br><span class="line">        <span class="keyword">if</span> self.__class__ == other.__class__:</span><br><span class="line">            <span class="keyword">return</span> self.<span class="built_in">id</span> == other.<span class="built_in">id</span></span><br><span class="line">        <span class="keyword">return</span> <span class="literal">False</span></span><br></pre></td></tr></table></figure>
+
+<p>The <a target="_blank" rel="noopener" href="https://www.youtube.com/watch?v=T-TwcmT6Rcw">abstract of Raymond Hettinger’s talk from Pycon</a> has an interesting summary of <code>dataclasses</code>.</p>
+<blockquote>
+<p>Dataclasses are shown to be the next step in a progression of data aggregation tools: tuple, dict, simple class, bunch recipe, named tuples, records, attrs, and then dataclasses. Each builds upon the one that came before, adding expressiveness at the expense of complexity.</p>
+</blockquote>
+<p>I’m not sure I completely agree. The <code>dataclasses</code> implementation looks closer to <code>attrs</code>-lite, than the “next step of progression”. </p>
+<h2 id="Pydantic"><a href="#Pydantic" class="headerlink" title="Pydantic"></a>Pydantic</h2><p>Another alternative is <a target="_blank" rel="noopener" href="https://pydantic-docs.helpmanual.io/">pydantic</a>. This is a bit more opinionated design. It also has a nice <code>Schema</code> abstraction to communicate core metadata on the fields as well as first class support for serialization hooks. The <code>pydantic</code> library also has a <code>dataclasses</code> wrapper layer that can be accessed via <code>pydantic.dataclasses</code>.</p>
+<p>Here’s an example of defining our <code>Person</code> data model.</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> typing <span class="keyword">import</span> <span class="type">Optional</span></span><br><span class="line"><span class="keyword">import</span> pydantic</span><br><span class="line"><span class="keyword">from</span> pydantic <span class="keyword">import</span> BaseModel, validator, PositiveInt</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Person</span>(<span class="title class_ inherited__">BaseModel</span>):</span><br><span class="line">    <span class="keyword">class</span> <span class="title class_">Config</span>:</span><br><span class="line">        allow_mutation = <span class="literal">False</span></span><br><span class="line">        validate_all = <span class="literal">True</span> </span><br><span class="line"></span><br><span class="line">    <span class="built_in">id</span>:PositiveInt</span><br><span class="line">    name:<span class="built_in">str</span></span><br><span class="line">    favorite_color: <span class="type">Optional</span>[<span class="built_in">str</span>] = <span class="literal">None</span></span><br><span class="line"></span><br><span class="line"><span class="meta">    @validator(<span class="params"><span class="string">&#x27;name&#x27;</span></span>)</span></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">validate_name</span>(<span class="params">cls, v</span>):</span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">not</span> v:</span><br><span class="line">            <span class="keyword">raise</span> ValueError(<span class="string">&quot;Name can&#x27;t be an empty&quot;</span>)</span><br><span class="line">        <span class="keyword">return</span> v</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__hash__</span>(<span class="params">self</span>):</span><br><span class="line">        <span class="keyword">return</span> <span class="built_in">hash</span>(self.<span class="built_in">id</span>)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__eq__</span>(<span class="params">self, other</span>):</span><br><span class="line">        <span class="keyword">if</span> self.__class__ == other.__class__:</span><br><span class="line">            <span class="keyword">return</span> self.<span class="built_in">id</span> == other.<span class="built_in">id</span></span><br><span class="line">        <span class="keyword">return</span> <span class="literal">False</span></span><br></pre></td></tr></table></figure>
+
+<p>Overall, I like the general style and approach, however, it does have a few quarks. Specifically the keyword only usage as well as unexpected casting behavior of <code>int</code>s to <code>str</code>s.</p>
+<p>The <code>pydantic</code> API also supports rich metadata that could be useful for generating commandline interfaces for a given schema data model and emitted JSONSchema.</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> pydantic <span class="keyword">import</span> BaseModel, validator, ValidationError, Schema</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Person</span>(<span class="title class_ inherited__">BaseModel</span>):</span><br><span class="line">    <span class="keyword">class</span> <span class="title class_">Config</span>:</span><br><span class="line">        allow_mutation = <span class="literal">False</span></span><br><span class="line"></span><br><span class="line">    <span class="comment"># &#x27;...&#x27; means the value is required.</span></span><br><span class="line">    <span class="built_in">id</span>: PositiveInt = Schema(..., title=<span class="string">&quot;User Id&quot;</span>)</span><br><span class="line">    name:<span class="built_in">str</span> = Schema(..., title=<span class="string">&quot;User name&quot;</span>)</span><br><span class="line">    favorite_color:<span class="type">Optional</span>[<span class="built_in">str</span>] = Schema(<span class="literal">None</span>,</span><br><span class="line">                                          title=<span class="string">&quot;User Favorite Color&quot;</span>,</span><br><span class="line">                                          description=<span class="string">&quot;Favorite Color. Provided as case sensitive english spelling&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="meta">     @validator(<span class="params"><span class="string">&#x27;name&#x27;</span></span>)</span></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">validate_name</span>(<span class="params">cls, v</span>):</span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">not</span> v:</span><br><span class="line">            <span class="keyword">raise</span> ValueError(<span class="string">&quot;Name can&#x27;t be an empty&quot;</span>)</span><br><span class="line">        <span class="keyword">return</span> v</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__hash__</span>(<span class="params">self</span>):</span><br><span class="line">        <span class="keyword">return</span> <span class="built_in">hash</span>(self.<span class="built_in">id</span>)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__eq__</span>(<span class="params">self, other</span>):</span><br><span class="line">        <span class="keyword">if</span> self.__class__ == other.__class__:</span><br><span class="line">            <span class="keyword">return</span> self.<span class="built_in">id</span> == other.<span class="built_in">id</span></span><br><span class="line">        <span class="keyword">return</span> <span class="literal">False</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#Person.schema() will emit the JSONSchema as a dict.</span></span><br></pre></td></tr></table></figure>
+
+
+<h1 id="Summary-And-Conclusion"><a href="#Summary-And-Conclusion" class="headerlink" title="Summary And Conclusion"></a>Summary And Conclusion</h1><ul>
+<li><code>dataclasses</code> offers a terse syntax for defining a class or data container that has type annotations using a code generation approach</li>
+<li><code>dataclasses</code> <code>field</code> metadata can be used to define defaults, communicate which fields should be used in <code>eq</code> or <code>hash</code>, <code>lte</code>, etc…</li>
+<li><code>dataclasses</code> has a <code>__post_init</code> hook that can be used for validation</li>
+<li><code>dataclasses</code> By design does not do type validation. It only adds <code>__annotation__</code> to the data container for static analyzers to consume, such as <code>mypy</code></li>
+<li>Since <code>dataclasses</code> is now in the standard lib, this means feature enhancement, bug fixes, and backwards compatibility are now coupled the official Python release process</li>
+<li><a target="_blank" rel="noopener" href="https://www.youtube.com/watch?v=T-TwcmT6Rcw">Raymond’s Pycon</a> talk mentions the end-to-end develop time on <code>dataclasses</code> was 200+ hrs</li>
+</ul>
+<p>Initially, I was a intrigued by the addition of <code>dataclasses</code> to the standard library. However, after a deeper dive into the <code>dataclasses</code>, it’s not clear to me that these are particularly useful for Python developers. I believe third-party solutions such as <code>attrs</code> or <code>pydantic</code> might be a better fit due to their validation hooks and richer feature sets. It will be interesting to see the adoption of <code>dataclasses</code> by both the Python core as well as third-party developers.</p>
+<p>For a deeper look and comparison of the 3 (or 4) models to define a class or data container in Python, please consult this <a target="_blank" rel="noopener" href="https://gist.github.com/mpkocher/4482e9315c64241f442b1e5f8783316d">Notebook in this Gist</a></p>
+<p>Best on all your Python-ing!</p>
+
+  </div>
+  <footer class="article-footer">
+    
+  <div class="cc">
+    <a href="http://creativecommons.org/licenses/by-sa/4.0/deed.e" target="_blank" title="Attribution-ShareAlike">
+      <img src="/images/cc/cc.png">
+      
+          <img src="/images/cc/by.png">
+        
+          <img src="/images/cc/sa.png">
+      
+      <span>
+        This work is licensed under a Creative Commons Attribution-ShareAlike 4.0 International License.
+      </span>
+    </a>
+  </div>
+
+
+    
+
+  </footer>
+</article>
+
+
+
+
+
+
+
+          <div class="main-footer">
+  
+    © 2022  - Powered by <a href="http://hexo.io" target="_blank">Hexo</a> - Theme <a href="https://github.com/denjones/hexo-theme-chan" target="_blank">Chan</a>
+  
+</div>
+
+      
+        </div>
+      
+    </div>
+  </div>
+  
+<script src="//apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
+
+
+  
+<link rel="stylesheet" href="/PhotoSwipe/photoswipe.css">
+
+  
+<link rel="stylesheet" href="/PhotoSwipe/default-skin/default-skin.css">
+
+
+  <!-- Root element of PhotoSwipe. Must have class pswp. -->
+  <div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    <!-- Background of PhotoSwipe.
+             It's a separate element as animating opacity is faster than rgba(). -->
+    <div class="pswp__bg"></div>
+
+    <!-- Slides wrapper with overflow:hidden. -->
+    <div class="pswp__scroll-wrap">
+
+      <!-- Container that holds slides.
+                PhotoSwipe keeps only 3 of them in the DOM to save memory.
+                Don't modify these 3 pswp__item elements, data is added later on. -->
+      <div class="pswp__container">
+        <div class="pswp__item"></div>
+        <div class="pswp__item"></div>
+        <div class="pswp__item"></div>
+      </div>
+
+      <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+      <div class="pswp__ui pswp__ui--hidden">
+
+        <div class="pswp__top-bar">
+
+          <!--  Controls are self-explanatory. Order can be changed. -->
+
+          <div class="pswp__counter"></div>
+
+          <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+          <button class="pswp__button pswp__button--share" title="Share"></button>
+
+          <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+          <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+          <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
+          <!-- element will get class pswp__preloader--active when preloader is running -->
+          <div class="pswp__preloader">
+            <div class="pswp__preloader__icn">
+              <div class="pswp__preloader__cut">
+                <div class="pswp__preloader__donut"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+          <div class="pswp__share-tooltip"></div>
+        </div>
+
+        <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)"></button>
+
+        <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)"></button>
+
+        <div class="pswp__caption">
+          <div class="pswp__caption__center"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  
+<script src="/PhotoSwipe/photoswipe.js"></script>
+
+  
+<script src="/PhotoSwipe/photoswipe-ui-default.js"></script>
+
+
+
+
+<script src="/perfect-scrollbar/js/min/perfect-scrollbar.min.js"></script>
+
+
+<script src="/scripts/main.js"></script>
+
+
+</body>
+</html>
