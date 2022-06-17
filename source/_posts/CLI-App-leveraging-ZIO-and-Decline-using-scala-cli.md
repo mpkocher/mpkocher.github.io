@@ -15,18 +15,18 @@ Here's a quick overview and demonstration of kicking the tires on ZIO 1.x + [dec
 
 ## High Level Points
 
-- `scala-cli` is a new tool in activate development that aims to replace the current `scala` tool. 
+- `scala-cli` is a new tool in active development that aims to replace the current `scala` tool. 
 - `scala-cli` enables running scripts, loading REPL, compiling, testing, packaging (amongst other features) for "simple" (flat) projects.
 - `scala-cli` enables a very Python-ish workflow and integrates with your text editor well. A REPL driven approach can be used using `scala-cli repl File.scala`.
-- `scala-cli package` enables [creating an executable](https://scala-cli.virtuslab.org/docs/cookbooks/scala-package) from your main class. This is very useful. No need to deal with Python's conda, pipenv, poetry, etc... for setting up an env. Rsync/scp your packaged tool to another server and your good to go (provided the java versions are compatable).
+- `scala-cli package` enables [creating an executable](https://scala-cli.virtuslab.org/docs/cookbooks/scala-package) from your main class. This is very useful. No need to deal with Python's conda, pipenv, poetry, etc... for setting up an env. Rsync/scp your packaged tool to another server and your good to go (provided the java versions are compatible).
 - Building a commandline tool using ZIO was a useful exercise to kick the tires on ZIO and understand the ZIO 1.x effect system and learn how to compose computation in ZIO.
 - `decline` is a CLI parser library using `cats`. It has a very elegant mechanism of composing options/commands. 
-- The default `decline` interface had some unexpected behaviors with how `--help` was handled and how errors were handled/mapped to exit codes. This
+- The default `decline` interface had some unexpected behaviors with how `--help` was handled and how errors were handled/mapped to exit codes.
 
 
 ## Specifics
 
-Using `scala-cli setup-ide .` will generate the necessary files for the LSP server.
+Using `scala-cli setup-ide .` will generate the necessary files for the LSP server for your text editor.
 
 - https://scala-cli.virtuslab.org/docs/commands/setup-ide
 
@@ -190,17 +190,17 @@ Hello Dave. Running with alpha=3.14
 $> echo $?
 0
 $ ./DeclinedApp --user Dave --alpha dragon
-Error java.lang.Exception: List(Invalid floating-point: dragon)
+Error java.lang.Exception: Invalid floating-point: dragon
 $> ./DeclinedApp --user Dave --alpha 3.14 --dragon
-Error java.lang.Exception: List(Unexpected option: --dragon)
+Error java.lang.Exception: Unexpected option: --dragon
 $>echo $?
 1
 ```
 
 ## Summary and Final Comments
 
-- `scala-cli` is __very__ promising addition for the Scala community.
+- `scala-cli` is a __very__ promising addition for the Scala community.
 - `scala-cli` changed my workflow. This new workflow was closer to how I would work in Python.
-- I really like ZIO's core composiblity ethos, however, it does have a learning curve.
+- I really like ZIO's core composablity ethos, however, it does have a learning curve.
 - `Decline`'s `Command[T]` design allows for intergrate with ZIO pretty seemlessly. 
 - Misc "scrappy" CLI tools that I would typically write in Python, I could easily write in Scala. 
